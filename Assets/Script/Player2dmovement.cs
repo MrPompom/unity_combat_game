@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 
 
-public class Player2dmovement : MonoBehaviour
+public class Player2dmovement : Character
 {
     public float MovementSpeed = 300;
     public float JumpForce = 100;
@@ -135,13 +135,13 @@ public class Player2dmovement : MonoBehaviour
         
     } }
     
-    // public void DommageAttack()
-    // {
-    //     Collider2D[] enemy = Physics2D.OverlapCircleAll(checkPnj.position, 0.2f, layerPnj);
-    //     foreach (Collider2D col in enemy)
-    //     {
-    //         //Debug.Log(col.GetComponent<Character>().takeDomage(pnj.domage));
-    //         col.GetComponent<Enemy>().takeDomage(pnj.domage);
-    //     }
-    // }
+    public void DommageAttack()
+    {
+        Collider2D[] enemy = Physics2D.OverlapCircleAll(checkPnj.position, 0.2f, layerPnj);
+        foreach (Collider2D col in enemy)
+        {
+            //Debug.Log(col.GetComponent<Character>().takeDomage(pnj.domage));
+            col.GetComponent<Character>().takeDomage(pnj.domage);
+        }
+    }
 }
