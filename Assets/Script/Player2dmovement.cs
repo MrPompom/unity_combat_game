@@ -18,8 +18,7 @@ public class Player2dmovement : Character
     public bool canMoving;
     public Transform checkGround;
     public LayerMask WhastIsGround;
-    public Transform checkPnj;
-    public LayerMask layerPnj;
+    public GameObject target;
     PhotonView view;
 
     private void Start()
@@ -36,9 +35,6 @@ public class Player2dmovement : Character
         Attack(); 
     }
 
-    private void FixedUpdate() {
-        //Move();
-    }
 
     private void Move() 
     { if (view.IsMine){
@@ -79,17 +75,6 @@ public class Player2dmovement : Character
        
     } }
 
-    void crounch()
-    {
-        if(isGrounded)
-        {
-            if(Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                animator.SetTrigger("isCrounched");
-            }
-        }
-    }
-
     void Flip()
 	{
 		FacingRight = !FacingRight;
@@ -101,7 +86,6 @@ public class Player2dmovement : Character
     public void canMove()
     {
         canMoving = !canMoving;
-        Debug.Log(canMoving);
     }
     void Attack()
     { if (view.IsMine){
@@ -135,13 +119,19 @@ public class Player2dmovement : Character
         
     } }
     
-    public void DommageAttack()
-    {
-        Collider2D[] enemy = Physics2D.OverlapCircleAll(checkPnj.position, 0.2f, layerPnj);
-        foreach (Collider2D col in enemy)
+    private void OnTriggerEnter2D(Collider2D trig) {
+        if(trig.gameObject.tag == "Player") 
         {
-            //Debug.Log(col.GetComponent<Character>().takeDomage(pnj.domage));
-            col.GetComponent<Character>().takeDomage(pnj.domage);
+            target = trig.gameObject;
+        }
+        
+    }
+
+    public void DommageAttack(int attackDommage)
+    {
+        if(target != null) {
+            target.GetComponent<Character>().takeDomage((pnj.domage + attackDommage));
+            target = null;
         }
     }
 }
